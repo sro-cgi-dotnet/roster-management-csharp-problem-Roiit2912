@@ -20,6 +20,17 @@ namespace RosterManagement
         /// <param name="wave">Refers to the Wave number</param>
         public void Add(string cadet, int wave)
         {
+            if(_roster.ContainsKey(wave))
+            {
+                _roster[wave].Add(cadet);
+            }
+            else
+            {
+                _roster.Add(wave,new List<string>());
+                _roster[wave].Add(cadet);
+                
+            }
+
         }
 
         /// <summary>
@@ -29,8 +40,19 @@ namespace RosterManagement
         /// <returns>List of Cadet's Name</returns>
         public List<string> Grade(int wave)
         {
-            var list = new List<string>();
-            return list;
+            List<string> list = new List<string>();
+            if(_roster.ContainsKey(wave))
+            {
+                 list = _roster[wave];
+
+                list.Sort();
+
+                return list;
+            }
+            else{
+                    return list;
+            }
+            
         }
 
         /// <summary>
@@ -40,6 +62,15 @@ namespace RosterManagement
         public List<string> Roster()
         {
             var cadets = new List<string>();
+            SortedDictionary<int, List<String>> dict = new SortedDictionary<int, List<string>>(_roster);
+         //  var dict=new SortedDictionary<int,List<string>>(_roster);
+
+            foreach (var item in dict)
+            {
+                item.Value.Sort();
+                cadets.AddRange(item.Value);
+            }
+
             return cadets;
         }
     }
